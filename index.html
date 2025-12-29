@@ -1,0 +1,1948 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO -->
+  <title>AI Resume Scanner | Free Resume Skill Matcher (Recruiter & Candidate Mode)</title>
+  <link rel="icon" type="image/png" href="./assets/images/logo.png">
+  <meta name="description"
+        content="Free AI Resume Scanner to match resumes with job descriptions. Analyze skills, get match scores, and download results instantly. No signup. No data stored. 100% privacy." />
+
+  <meta name="keywords"
+        content="resume scanner, ai resume scanner, free resume scanner, resume skill matcher, resume vs job description, ats resume scanner, resume analyzer, recruiter resume scanner, candidate resume feedback" />
+
+  <meta name="author" content="NG Technologies" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph (LinkedIn / Facebook) -->
+  <meta property="og:title"
+        content="AI Resume Scanner – Free, Secure & Private Resume Matching Tool" />
+  <meta property="og:description"
+        content="Compare resumes with job descriptions using AI. Works fully in your browser. No data stored. Free alternative to paid resume scanners." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https:/airesumescanner.nagarjunareddy.in/" />
+  <meta property="og:image"
+        content="https:/airesumescanner.nagarjunareddy.in/seo-preview.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title"
+        content="AI Resume Scanner – Free Resume Skill Matcher" />
+  <meta name="twitter:description"
+        content="Free AI-powered resume scanner with recruiter & candidate modes. No signup. No data stored." />
+  <meta name="twitter:image"
+        content="https:/airesumescanner.nagarjunareddy.in/images/seo-preview.png" />
+
+  <!-- Performance & UX -->
+  <meta name="theme-color" content="#3b82f6" />
+  <meta name="application-name" content="AI Resume Scanner" />
+
+  <!-- Security & Trust -->
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- 🔷 Structured Data: SoftwareApplication (SEO Bonus) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AI Resume Scanner",
+    "url": "https://airesumescanner.nagarjunareddy.in/",
+    "operatingSystem": "Web",
+    "applicationCategory": "BusinessApplication",
+    "description": "Free AI Resume Scanner to match resumes with job descriptions. Runs fully in the browser with no data stored and complete privacy.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "NG Technologies"
+    }
+  }
+  </script>
+  <!-- 🔷 End Structured Data -->
+
+
+  <!-- Existing scripts -->
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Modern gradient backgrounds */
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .gradient-card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .gradient-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .upload-zone {
+      border: 2px dashed #e2e8f0;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-zone::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .upload-zone:hover {
+      border-color: #6366f1;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      transform: scale(1.02);
+    }
+
+    .upload-zone:hover::before {
+      left: 100%;
+    }
+
+    .upload-zone.drag-over {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Enhanced buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    }
+
+    /* Tab styling */
+    .tab-button {
+      position: relative;
+      padding: 12px 24px;
+      border: none;
+      background: transparent;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 8px 8px 0 0;
+      color: #6b7280;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .tab-button:not(.active):hover {
+      background: rgba(99, 102, 241, 0.1);
+      color: #6366f1;
+    }
+
+    /* Progress bar enhancement */
+    .progress-bar {
+      transition: width 0.5s ease-in-out;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Toast notifications */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      animation: slideIn 0.3s ease-out;
+      border-left: 4px solid #6366f1;
+      backdrop-filter: blur(10px);
+    }
+
+    .toast.success {
+      border-left-color: #10b981;
+    }
+
+    .toast.error {
+      border-left-color: #ef4444;
+    }
+
+    .toast.info {
+      border-left-color: #f59e0b;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px) scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Modal enhancements */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(20px);
+      z-index: 999;
+    }
+
+    .results-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 900px;
+      width: 90%;
+      max-height: 85%;
+      overflow-y: auto;
+      z-index: 1000;
+      animation: modalSlideIn 0.3s ease-out;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -45%) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* Tour enhancements */
+    .tour-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      z-index: 9998;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .tour-spotlight {
+      position: absolute;
+      border: 3px solid #6366f1;
+      border-radius: 12px;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(99, 102, 241, 0.3);
+      z-index: 9999;
+      transition: all 0.3s ease-out;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(99, 102, 241, 0.3); }
+      50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75), inset 0 0 30px rgba(99, 102, 241, 0.5); }
+      100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(99, 102, 241, 0.3); }
+    }
+
+    .tour-tooltip {
+      position: fixed;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      z-index: 10000;
+      animation: slideUp 0.3s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px) scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Enhanced form elements */
+    .form-input {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .form-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .form-textarea {
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-textarea:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    /* Header enhancements */
+    .header-gradient {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+    }
+
+    .glass-effect {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Toggle switch enhancement */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toggle-switch::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-switch.active {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .toggle-switch.active::before {
+      transform: translateX(30px);
+    }
+
+    /* File info styling */
+    .file-info {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #0ea5e9;
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      color: #0c4a6e;
+    }
+
+    /* Spinner enhancement */
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      margin-right: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Error banner enhancement */
+    .error-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      padding: 20px;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 14px;
+      box-shadow: 0 -4px 20px rgba(239, 68, 68, 0.3);
+      z-index: 1001;
+      animation: slideUpBanner 0.3s ease-out;
+      border-top: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes slideUpBanner {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* Scanning progress enhancement */
+    .scanning-progress {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Icon enhancements */
+    .icon-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .icon-hover:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Responsive enhancements */
+    @media (max-width: 768px) {
+      .gradient-card {
+        margin: 10px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .tab-button {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: block;
+    }
+
+    .tab-content.hidden {
+      display: none;
+    }
+
+    /* Delete button */
+    .delete-btn {
+      transition: transform 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Suggestion card */
+    .suggestion-card {
+      border-left: 4px solid #6366f1;
+    }
+
+    /* Mode toggle */
+    .mode-toggle {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .mode-toggle:hover {
+      transform: scale(1.1);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="w-full h-full overflow-auto"><!-- Header -->
+   <header id="mainHeader" class="py-12 px-6 text-center relative header-gradient text-white">
+    <div class="absolute top-6 right-6 flex gap-4 items-center"><button id="modeToggle" class="mode-toggle glass-effect p-3 rounded-lg icon-hover" title="Toggle Dark/Light Mode">
+      <svg id="modeIcon" class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+      </svg></button> <button id="tourBtn" class="glass-effect p-3 rounded-lg font-medium icon-hover" title="Start Tour">
+      <svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg></button>
+    </div>
+    <div class="max-w-4xl mx-auto">
+     <h1 id="appTitle" class="text-6xl font-bold mb-4 text-white drop-shadow-lg">AI Resume Scanner</h1>
+     <p id="subtitle" class="text-2xl mb-8 drop-shadow-md text-white">AI-Powered Resume Matching</p>
+     <div class="flex justify-center items-center gap-4 mb-6">
+      <span id="modeLabel" class="text-lg font-medium drop-shadow-md text-white">Mode:</span>
+      <label class="inline-flex items-center cursor-pointer">
+       <div class="toggle-switch" id="candidateModeToggle"></div>
+       <span id="candidateModeLabel" class="ml-4 text-lg font-semibold text-white drop-shadow-md">Recruiter Mode</span>
+      </label>
+     </div>
+     <div class="flex justify-center gap-6 text-sm">
+      <div class="flex items-center gap-2">
+       <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+       <span id="privacyText" class="drop-shadow-md text-white">100% Private</span>
+      </div>
+      <div class="flex items-center gap-2">
+       <div class="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+       <span id="dataText" class="drop-shadow-md text-white">No Data Stored</span>
+      </div>
+      <div class="flex items-center gap-2">
+       <div class="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+       <span id="freeText" class="drop-shadow-md text-white">Free Forever</span>
+      </div>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main id="mainContent" class="max-w-7xl mx-auto px-6 pt-12 pb-8"><!-- Upload Section -->
+    <div class="grid md:grid-cols-2 gap-12 mb-12"><!-- Job Description Upload -->
+     <div id="jdCard" class="gradient-card p-8 rounded-2xl">
+      <h2 id="jdUploadLabel" class="text-3xl font-bold mb-6 text-center">Job Description</h2>
+      
+      <!-- Tab Navigation -->
+      <div id="tabContainer" class="flex mb-6 bg-gray-100 rounded-lg p-1">
+        <button id="uploadTab" class="tab-button active flex-1">📁 Upload File</button>
+        <button id="textTab" class="tab-button flex-1">✍️ Enter Text</button>
+      </div>
+      
+      <!-- Upload File Tab Content -->
+      <div id="uploadTabContent" class="tab-content">
+        <div id="jdDropZone" class="upload-zone rounded-xl p-10 text-center cursor-pointer border-2 border-dashed border-purple-300 hover:border-purple-500">
+         <div class="mb-4">
+          <svg class="mx-auto h-16 w-16 text-purple-500 icon-hover" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+          </svg>
+         </div>
+         <p id="jdDropText" class="text-xl mb-3 font-semibold">Drop JD file here or click to browse</p>
+         <p id="jdDropSubtext" class="text-sm">Supports .txt, .pdf, .docx, .jpg, .png, .jpeg</p><input type="file" id="jdInput" class="hidden" accept=".txt,.pdf,.docx,.jpg,.jpeg,.png,.gif,.bmp,.webp,image/*">
+        </div>
+      </div>
+      
+      <!-- Enter Text Tab Content -->
+      <div id="textTabContent" class="tab-content hidden">
+        <div id="textInputContainer" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200">
+          <textarea id="jdTextInput" class="form-textarea w-full h-48 border-2 border-blue-300 focus:border-blue-500" placeholder="Paste or type your job description here..."></textarea>
+          <p id="textHint" class="text-sm text-blue-600 mt-3 text-center font-medium">💡 Enter the job description text directly</p>
+        </div>
+      </div>
+      
+      <div id="jdFileName" class="mt-4 text-sm font-medium flex justify-center"></div>
+     </div><!-- Resume Upload -->
+     <div id="resumeCard" class="gradient-card p-8 rounded-2xl">
+      <h2 id="resumeUploadLabel" class="text-3xl font-bold mb-6 text-center">Upload Resumes</h2>
+      <div id="resumeDropZone" class="upload-zone rounded-xl p-10 text-center cursor-pointer">
+       <div class="mb-4">
+        <svg class="mx-auto h-16 w-16 text-green-500 icon-hover" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+       </div>
+       <p id="resumeDropText" class="text-xl mb-3 font-semibold">Drop resume files here or click to browse</p>
+       <p id="resumeDropSubtext" class="text-sm">Supports .txt, .pdf, .docx (Multiple files)</p><input type="file" id="resumeInput" class="hidden" accept=".txt,.pdf,.docx" multiple>
+      </div>
+      <div id="resumeFileNames" class="mt-4 text-sm font-medium text-center"></div>
+      <div id="resumeFilesList" class="mt-4 space-y-3"></div>
+     </div>
+    </div><!-- Scan Button -->
+    <div class="text-center mb-8">
+     <button id="scanBtn" class="btn-primary px-12 py-4 text-xl shadow-2xl">
+      <span id="scanBtnText">🚀 Scan Resumes</span>
+     </button>
+     <div id="scanProgress" class="hidden scanning-progress max-w-2xl mx-auto mt-6">
+      <div class="flex items-center justify-center mb-4">
+       <div class="spinner"></div><span id="progressText" class="font-semibold text-lg text-white drop-shadow-md">Scanning resumes... Please wait</span>
+      </div>
+      <div id="progressContainer" class="h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+       <div id="progressBar" class="progress-bar h-full" style="width: 0%"></div>
+      </div>
+      <p class="text-sm mt-4 text-center text-white drop-shadow-md">⚠️ Do not refresh or close this window</p>
+     </div>
+    </div>
+   </main><!-- Results Modal -->
+   <div id="resultsModal" class="hidden">
+    <div class="modal-backdrop" id="resultsBackdrop"></div>
+    <div class="results-modal rounded-xl shadow-2xl p-8">
+     <div class="flex justify-between items-start mb-6">
+      <h2 id="modalTitle" class="text-3xl font-bold">Scan Results</h2><button id="closeResultsBtn" class="glass-effect p-3 rounded-xl hover:bg-white/20 transition-all icon-hover">
+       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+       </svg></button>
+     </div>
+     <div id="modalContent"></div>
+     <div class="flex gap-3 justify-center mt-6"><button id="exportBtnModal" class="btn-primary px-8 py-3 text-lg"> <span id="exportBtnText">📥 Download CSV</span> </button>
+     </div>
+    </div>
+   </div><!-- Tour Overlay -->
+   <div id="tourOverlay" class="hidden">
+    <div class="tour-overlay"></div>
+    <div id="tourSpotlight" class="tour-spotlight"></div>
+    <div id="tourTooltip" class="tour-tooltip"></div>
+   </div><!-- Error Banner -->
+   <div id="errorBanner" class="error-banner hidden">
+    <div class="max-w-7xl mx-auto">
+     <div class="flex justify-between items-start">
+      <div>
+       <h4 class="font-bold text-lg mb-2">❌ Scanning Errors Detected</h4>
+       <div id="errorContent"></div>
+      </div><button id="closeErrorBtn" class="text-white hover:text-gray-200 transition-colors">
+       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+       </svg></button>
+     </div>
+    </div>
+   </div>
+   <!-- Embedded Footer -->
+    <div id="footerText" class="text-center py-3 text-sm">
+      © <span id="currentYear"></span> NG Technologies| AI Resume Scanner. All rights reserved.
+    </div>
+    <!-- Privacy & Trust Gate Modal -->
+    <div id="privacyGate" class="fixed inset-0 z-[99999] flex items-center justify-center hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-purple-900/80 to-blue-900/80 backdrop-blur-xl"></div>
+
+      <div class="relative max-w-2xl w-full mx-4 p-8 rounded-3xl shadow-2xl bg-white/95 backdrop-blur-xl border border-white/20">
+        <div class="text-center mb-6">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h2 class="text-4xl font-bold mb-2 text-white">
+            Welcome to AI Resume Scanner
+          </h2>
+          <p class="text-white text-lg drop-shadow-md">Your privacy-first resume matching tool</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
+            <div class="flex-shrink-0 w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+              <span class="text-white text-xl">🔒</span>
+            </div>
+            <div>
+              <h3 class="font-semibold text-green-800 mb-1">Security First</h3>
+              <p class="text-sm text-green-700">Your files never leave your browser</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+            <div class="flex-shrink-0 w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+              <span class="text-white text-xl">🕵️</span>
+            </div>
+            <div>
+              <h3 class="font-semibold text-blue-800 mb-1">Complete Privacy</h3>
+              <p class="text-sm text-blue-700">No data sent to any server</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-200">
+            <div class="flex-shrink-0 w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+              <span class="text-white text-xl">💾</span>
+            </div>
+            <div>
+              <h3 class="font-semibold text-purple-800 mb-1">No Storage</h3>
+              <p class="text-sm text-purple-700">Nothing saved after closing</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200">
+            <div class="flex-shrink-0 w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+              <span class="text-white text-xl">💸</span>
+            </div>
+            <div>
+              <h3 class="font-semibold text-orange-800 mb-1">100% Free</h3>
+              <p class="text-sm text-orange-700">No subscriptions or hidden fees</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button
+            id="acceptPrivacyGate"
+            class="btn-primary px-12 py-4 text-xl">
+            Get Started 🚀
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    const defaultConfig = {
+      background_color: "#f0f4f8",
+      surface_color: "#ffffff",
+      text_color: "#1e293b",
+      primary_action_color: "#3b82f6",
+      secondary_action_color: "#64748b",
+      font_family: "system-ui",
+      font_size: 16,
+      app_title: "AI Resume Scanner",
+      subtitle: "AI-Powered Resume Matching",
+      jd_upload_label: "Upload Job Description",
+      resume_upload_label: "Upload Resumes",
+      scan_button_text: "Scan Resumes",
+      candidate_mode_label: "Candidate Mode",
+      results_title: "Scan Results",
+      export_button_text: "Download CSV",
+      tour_welcome_title: "Welcome to AI Resume Scanner!",
+      tour_welcome_message: "Let's take a quick tour of the features"
+    };
+
+    const darkModeConfig = {
+      background_color: "#0f172a",
+      surface_color: "#1e293b",
+      text_color: "#f1f5f9",
+      primary_action_color: "#60a5fa",
+      secondary_action_color: "#cbd5e1"
+    };
+
+    let isDarkMode = false;
+    let currentThemeConfig = { ...defaultConfig };
+
+    let currentData = [];
+    let jdFile = null;
+    let resumeFiles = [];
+    let jdText = '';
+    let isCandidateMode = false;
+    let scanErrors = [];
+
+    function detectTheme() {
+      const savedTheme = localStorage.getItem('resume_scanner_theme');
+      if (savedTheme) {
+        isDarkMode = savedTheme === 'dark';
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        isDarkMode = prefersDark;
+      }
+      applyTheme();
+    }
+
+    function applyTheme() {
+      const baseTheme = isDarkMode ? { ...defaultConfig, ...darkModeConfig } : { ...defaultConfig };
+      
+      if (window.elementSdk && window.elementSdk.config) {
+        const hasCustomColors = window.elementSdk.config.background_color !== undefined;
+        
+        if (hasCustomColors) {
+          currentThemeConfig = { ...baseTheme, ...window.elementSdk.config };
+        } else {
+          currentThemeConfig = baseTheme;
+        }
+      } else {
+        currentThemeConfig = baseTheme;
+      }
+      
+      onConfigChange(currentThemeConfig);
+      updateModeIcon();
+    }
+
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      localStorage.setItem('resume_scanner_theme', isDarkMode ? 'dark' : 'light');
+      applyTheme();
+    }
+
+    function applyModeStyles() {
+        const scanBtn = document.getElementById('scanBtn');
+        const subtitle = document.getElementById('subtitle');
+        const label = document.getElementById('candidateModeLabel');
+
+        if (isCandidateMode) {
+            // 🧑‍💼 Candidate Mode
+            scanBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            subtitle.textContent = 'Personal Resume Feedback';
+            label.textContent = 'Candidate Mode';
+        } else {
+            // 🧑‍💼 Recruiter Mode
+            scanBtn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            subtitle.textContent = 'AI-Powered Resume Matching';
+            label.textContent = 'Recruiter Mode';
+        }
+        updateToggleVisual();
+    }
+
+    function updateToggleVisual() {
+        const toggle = document.getElementById('candidateModeToggle');
+        if (isCandidateMode) {
+            toggle.classList.add('active');
+        } else {
+            toggle.classList.remove('active');
+        }
+    }
+
+    function updateModeIcon() {
+      const icon = document.getElementById('modeIcon');
+      if (isDarkMode) {
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>';
+      } else {
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>';
+      }
+    }
+
+    const dataHandler = {
+      onDataChanged(data) {
+        currentData = data;
+      }
+    };
+
+    let sdkInitialized = false;
+    // ===== Local Data SDK Adapter (GitHub Pages compatible) =====
+    (function () {
+    if (window.dataSdk) return; // do not override real SDK
+
+    const STORAGE_KEY = 'resume_scanner_results';
+
+    function load() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    }
+
+    function save(data) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    window.dataSdk = {
+        async init(handler) {
+        const data = load();
+        if (handler && typeof handler.onDataChanged === 'function') {
+            handler.onDataChanged(data);
+        }
+        return { isOk: true };
+        },
+
+        async create(record) {
+        const data = load();
+        data.push(record);
+        save(data);
+        return { isOk: true };
+        }
+    };
+    })();
+
+    async function initApp() {
+      let retries = 0;
+      const maxRetries = 100;
+      
+      while (!window.dataSdk && retries < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        retries++;
+      }
+      
+      if (!window.dataSdk) {
+        console.error('Data SDK failed to load after 10 seconds');
+        sdkInitialized = false;
+        return;
+      }
+      
+      try {
+        const initResult = await window.dataSdk.init(dataHandler);
+        if (!initResult.isOk) {
+          console.error('Failed to initialize Data SDK');
+          sdkInitialized = false;
+        } else {
+          sdkInitialized = true;
+          checkScanReady();
+        }
+      } catch (error) {
+        console.error('Error initializing app:', error);
+        sdkInitialized = false;
+      }
+    }
+
+    function showPrivacyGateIfNeeded() {
+      const hasAccepted = localStorage.getItem('resume_scanner_privacy_accepted');
+      if (!hasAccepted) {
+        document.getElementById('privacyGate').classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // prevent scrolling
+      }
+    }
+
+    function closePrivacyGate() {
+      localStorage.setItem('resume_scanner_privacy_accepted', 'true');
+      document.getElementById('privacyGate').classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('acceptPrivacyGate')
+      .addEventListener('click', closePrivacyGate);
+
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || currentThemeConfig.font_family || defaultConfig.font_family;
+      const baseSize = config.font_size || currentThemeConfig.font_size || defaultConfig.font_size;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      const fontFamily = `${customFont}, ${baseFontStack}`;
+
+      const bgColor = config.background_color || currentThemeConfig.background_color;
+      const surfaceColor = config.surface_color || currentThemeConfig.surface_color;
+      const textColor = config.text_color || currentThemeConfig.text_color;
+      const primaryColor = config.primary_action_color || currentThemeConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || currentThemeConfig.secondary_action_color;
+
+      // Set consistent dark background for the entire app
+      document.getElementById('app').style.background = isDarkMode
+        ? '#0f172a'  // Single consistent dark background
+        : 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)';
+      document.getElementById('app').style.color = textColor;
+      document.getElementById('app').style.fontFamily = fontFamily;
+      document.getElementById('app').style.fontSize = `${baseSize}px`;
+
+      document.getElementById('appTitle').textContent = config.app_title || defaultConfig.app_title;
+      document.getElementById('appTitle').style.fontSize = `${baseSize * 2}px`;
+      document.getElementById('appTitle').style.color = textColor;
+
+      document.getElementById('subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+      document.getElementById('subtitle').style.fontSize = `${baseSize * 1.25}px`;
+      document.getElementById('subtitle').style.color = textColor;
+
+      document.getElementById('jdUploadLabel').textContent = config.jd_upload_label || defaultConfig.jd_upload_label;
+      document.getElementById('jdUploadLabel').style.fontSize = `${baseSize * 1.5}px`;
+      document.getElementById('jdUploadLabel').style.color = textColor;
+
+      document.getElementById('resumeUploadLabel').textContent = config.resume_upload_label || defaultConfig.resume_upload_label;
+      document.getElementById('resumeUploadLabel').style.fontSize = `${baseSize * 1.5}px`;
+      document.getElementById('resumeUploadLabel').style.color = textColor;
+
+      document.getElementById('scanBtnText').textContent = config.scan_button_text || defaultConfig.scan_button_text;
+      document.getElementById('exportBtnText').textContent = config.export_button_text || defaultConfig.export_button_text;
+
+      document.getElementById('candidateModeLabel').textContent = config.candidate_mode_label || defaultConfig.candidate_mode_label;
+      document.getElementById('candidateModeLabel').style.color = textColor;
+
+      document.querySelectorAll('.upload-zone').forEach(zone => {
+        zone.parentElement.style.background = surfaceColor;
+        zone.style.color = textColor;
+        zone.style.background = isDarkMode ? '#374151' : 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)';
+        zone.style.borderColor = isDarkMode ? '#6b7280' : '#e2e8f0';
+      });
+
+      // Update upload zone text colors
+      document.getElementById('jdDropText').style.color = textColor;
+      document.getElementById('jdDropSubtext').style.color = secondaryColor;
+      document.getElementById('resumeDropText').style.color = textColor;
+      document.getElementById('resumeDropSubtext').style.color = secondaryColor;
+
+      // Update tab button colors
+      document.querySelectorAll('.tab-button').forEach(tab => {
+        if (!tab.classList.contains('active')) {
+          tab.style.color = secondaryColor;
+        }
+      });
+
+      // Update tab container background
+      document.getElementById('tabContainer').style.background = surfaceColor;
+
+      // Update text input container
+      const textInputContainer = document.getElementById('textInputContainer');
+      if (textInputContainer) {
+        textInputContainer.style.background = surfaceColor;
+        textInputContainer.style.borderColor = primaryColor;
+      }
+
+      // Update text hint color
+      document.getElementById('textHint').style.color = primaryColor;
+
+      document.getElementById('scanBtn').style.background = primaryColor;
+      document.getElementById('scanBtn').style.color = surfaceColor;
+      document.getElementById('scanBtn').style.fontSize = `${baseSize * 1.125}px`;
+
+      document.getElementById('exportBtnModal').style.background = secondaryColor;
+      document.getElementById('exportBtnModal').style.color = surfaceColor;
+
+      const modalContent = document.querySelector('.modal-backdrop + div');
+      if (modalContent) {
+        modalContent.style.background = surfaceColor;
+        modalContent.style.color = textColor;
+      }
+
+      const resultsModalContent = document.querySelector('.results-modal');
+      if (resultsModalContent) {
+        resultsModalContent.style.background = surfaceColor;
+        resultsModalContent.style.color = textColor;
+      }
+
+
+      document.getElementById('modeToggle').style.background = surfaceColor;
+      document.getElementById('modeToggle').style.color = textColor;
+
+      document.getElementById('tourBtn').style.background = primaryColor;
+      document.getElementById('tourBtn').style.color = surfaceColor;
+
+      document.getElementById('progressText').style.color = textColor;
+      document.getElementById('scanProgress').style.color = textColor;
+
+      // Update header text colors for dynamic theming
+      document.getElementById('modeLabel').style.color = textColor;
+      document.getElementById('privacyText').style.color = textColor;
+      document.getElementById('dataText').style.color = textColor;
+      document.getElementById('freeText').style.color = textColor;
+
+      // Update modal title color
+      document.getElementById('modalTitle').style.color = textColor;
+
+      // Update progress container background
+      document.getElementById('progressContainer').style.background = surfaceColor;
+
+      // Update footer text color
+      document.getElementById('footerText').style.color = secondaryColor;
+
+      // Update gradient card backgrounds - subtle difference from main background
+      const jdCard = document.getElementById('jdCard');
+      const resumeCard = document.getElementById('resumeCard');
+      if (jdCard) {
+        jdCard.style.background = isDarkMode
+          ? '#1e293b'  // Slightly lighter than main background
+          : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+      }
+      if (resumeCard) {
+        resumeCard.style.background = isDarkMode
+          ? '#1e293b'  // Slightly lighter than main background
+          : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)';
+      }
+
+      // Remove separate header and main content backgrounds for clean look
+      const mainHeader = document.getElementById('mainHeader');
+      if (mainHeader) {
+        mainHeader.style.background = isDarkMode
+          ? 'transparent'  // Let the app background show through
+          : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+      }
+
+      // Remove main content background for clean look
+      const mainContent = document.getElementById('mainContent');
+      if (mainContent) {
+        mainContent.style.background = 'transparent';  // Let app background show through
+      }
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+            { get: () => config.primary_action_color || defaultConfig.primary_action_color, set: (v) => { config.primary_action_color = v; window.elementSdk.setConfig({ primary_action_color: v }); } },
+            { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } }
+          ],
+          borderables: [],
+          fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+          fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["app_title", config.app_title || defaultConfig.app_title],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ["jd_upload_label", config.jd_upload_label || defaultConfig.jd_upload_label],
+          ["resume_upload_label", config.resume_upload_label || defaultConfig.resume_upload_label],
+          ["scan_button_text", config.scan_button_text || defaultConfig.scan_button_text],
+          ["candidate_mode_label", config.candidate_mode_label || defaultConfig.candidate_mode_label],
+          ["results_title", config.results_title || defaultConfig.results_title],
+          ["export_button_text", config.export_button_text || defaultConfig.export_button_text],
+          ["tour_welcome_title", config.tour_welcome_title || defaultConfig.tour_welcome_title],
+          ["tour_welcome_message", config.tour_welcome_message || defaultConfig.tour_welcome_message]
+        ])
+      });
+    }
+
+    async function readFile(file) {
+      const fileType = file.name.split('.').pop().toLowerCase();
+      
+      if (fileType === 'txt') {
+        return await readTextFile(file);
+      } else if (fileType === 'pdf') {
+        return await readPdfFile(file);
+      } else if (fileType === 'docx') {
+        return await readDocxFile(file);
+      } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileType)) {
+        return await readImageFile(file);
+      }
+      return '';
+    }
+
+    async function readTextFile(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsText(file);
+      });
+    }
+
+    async function readPdfFile(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const typedArray = new Uint8Array(e.target.result);
+          const pdf = await pdfjsLib.getDocument(typedArray).promise;
+          let text = '';
+          
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            text += content.items.map(item => item.str).join(' ') + '\n';
+          }
+          resolve(text);
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    async function readDocxFile(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          const arrayBuffer = e.target.result;
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          resolve(result.value);
+        };
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    async function readImageFile(file) {
+      try {
+        const result = await Tesseract.recognize(file, 'eng', {
+          logger: m => {
+            if (m.status === 'recognizing text') {
+              console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
+            }
+          }
+        });
+        return result.data.text;
+      } catch (error) {
+        throw new Error('Failed to extract text from image');
+      }
+    }
+
+    function extractSkills(text) {
+      const commonSkills = [
+        'javascript', 'python', 'java', 'react', 'angular', 'vue', 'node', 'express',
+        'sql', 'mongodb', 'postgresql', 'aws', 'azure', 'docker', 'kubernetes',
+        'html', 'css', 'typescript', 'git', 'agile', 'scrum', 'rest api', 'graphql',
+        'machine learning', 'ai', 'data analysis', 'excel', 'powerpoint', 'communication',
+        'leadership', 'project management', 'teamwork', 'problem solving', 'spring boot',
+        'django', 'flask', 'redis', 'jenkins', 'ci/cd', 'devops', 'linux', 'windows'
+      ];
+      
+      const lowerText = text.toLowerCase();
+      const foundSkills = commonSkills.filter(skill => 
+        lowerText.includes(skill)
+      );
+      
+      return foundSkills;
+    }
+
+    function calculateMatch(resumeText, jdSkills) {
+      const lowerResume = resumeText.toLowerCase();
+      const matchedSkills = jdSkills.filter(skill => lowerResume.includes(skill));
+      const missingSkills = jdSkills.filter(skill => !lowerResume.includes(skill));
+      const score = jdSkills.length > 0 ? Math.round((matchedSkills.length / jdSkills.length) * 100) : 0;
+      
+      return { score, matchedSkills, missingSkills };
+    }
+
+    async function scanResumes() {
+      // 🛑 VALIDATIONS
+      // Make sure JD and resumes are uploaded
+      if (!jdText || resumeFiles.length === 0) {
+        showToast('Please upload both JD and resumes', 'error');
+        return;
+      }
+
+      // 🚫 Candidate Mode: allow only ONE resume per scan
+      if (isCandidateMode && resumeFiles.length > 1) {
+        showToast('Candidate Mode allows only one resume per scan.', 'error');
+        return;
+      }
+
+      // Ensure SDK is initialized
+      if (!sdkInitialized || !window.dataSdk) {
+        showToast('App is still initializing. Please wait a moment and try again.', 'error');
+        return;
+      }
+
+      // 🔥 CLEAR OLD SCAN DATA (start fresh scan)
+      currentData = [];
+      localStorage.removeItem('resume_scanner_results');
+
+      // Limit total scans to 999
+      if (currentData.length + resumeFiles.length > 999) {
+        showToast('Maximum limit of 999 scans reached. Please delete some results first.', 'error');
+        return;
+      }
+      // 🚀 START SCANNING
+      scanErrors = [];
+      const scanBtn = document.getElementById('scanBtn');
+      const btnText = document.getElementById('scanBtnText');
+      const progressDiv = document.getElementById('scanProgress');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      
+      scanBtn.disabled = true;
+      progressDiv.classList.remove('hidden');
+      btnText.textContent = 'Scanning...';
+
+      showInlineWarning('⚠️ Do not refresh or close this window during scanning!');
+
+      const jdSkills = extractSkills(jdText);
+      const totalFiles = resumeFiles.length;
+      let processedFiles = 0;
+      
+      for (const file of resumeFiles) {
+        try {
+          progressText.textContent = `Scanning ${file.name}... (${processedFiles + 1}/${totalFiles})`;
+          
+          const resumeText = await readFile(file);
+          const { score, matchedSkills, missingSkills } = calculateMatch(resumeText, jdSkills);
+          
+          const result = await window.dataSdk.create({
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            job_title: jdFile.name.replace(/\.[^/.]+$/, ""),
+            candidate_name: file.name.replace(/\.[^/.]+$/, ""),
+            resume_filename: file.name,
+            match_score: score,
+            matched_skills: matchedSkills.join(', '),
+            missing_skills: missingSkills.join(', '),
+            total_skills: jdSkills.length,
+            scan_date: new Date().toISOString(),
+            errors: ""
+          });
+
+          // ✅ ADD RESULT TO IN-MEMORY DATA FOR UI / EXPORT / EMAIL
+        currentData.push({
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            job_title: jdFile.name.replace(/\.[^/.]+$/, ""),
+            candidate_name: file.name.replace(/\.[^/.]+$/, ""),
+            resume_filename: file.name,
+            match_score: score,
+            matched_skills: matchedSkills.join(', '),
+            missing_skills: missingSkills.join(', '),
+            total_skills: jdSkills.length,
+            scan_date: new Date().toISOString(),
+            errors: ""
+        });
+
+
+          if (!result.isOk) {
+            scanErrors.push({
+              file: file.name,
+              error: 'Failed to save scan result to database'
+            });
+          }
+        } catch (error) {
+          scanErrors.push({
+            file: file.name,
+            error: error.message || 'Unknown error during scanning'
+          });
+        }
+        
+        processedFiles++;
+        const progress = (processedFiles / totalFiles) * 100;
+        progressBar.style.width = `${progress}%`;
+      }
+
+      scanBtn.disabled = false;
+      btnText.textContent = window.elementSdk ? window.elementSdk.config.scan_button_text || defaultConfig.scan_button_text : defaultConfig.scan_button_text;
+      progressDiv.classList.add('hidden');
+      progressBar.style.width = '0%';
+      
+      hideInlineWarning();
+
+      if (scanErrors.length > 0) {
+        showErrorBanner();
+      }
+
+      showToast('Scan completed!', 'success');
+      showResultsModal();
+    }
+
+    function showResultsModal() {
+      const modal = document.getElementById('resultsModal');
+      const content = document.getElementById('modalContent');
+      
+      if (isCandidateMode) {
+        renderCandidateSuggestions(content);
+      } else {
+        renderAllResults(content);
+      }
+      
+      modal.classList.remove('hidden');
+    }
+
+    function renderCandidateSuggestions(container) {
+      if (currentData.length === 0) return;
+
+      const latestScan = currentData[currentData.length - 1];
+      const config = window.elementSdk ? window.elementSdk.config : currentThemeConfig;
+      const surfaceColor = config.surface_color || currentThemeConfig.surface_color;
+      const textColor = config.text_color || currentThemeConfig.text_color;
+      const primaryColor = config.primary_action_color || currentThemeConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || currentThemeConfig.secondary_action_color;
+      const scoreColor = latestScan.match_score >= 70 ? '#22c55e' : latestScan.match_score >= 40 ? '#f59e0b' : '#ef4444';
+
+      const missingSkills = latestScan.missing_skills ? latestScan.missing_skills.split(', ').filter(s => s) : [];
+      const matchedSkills = latestScan.matched_skills ? latestScan.matched_skills.split(', ').filter(s => s) : [];
+
+      container.innerHTML = `
+        <div class="p-6 rounded-xl shadow-lg mb-6" style="background: ${surfaceColor};">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h3 class="text-2xl font-bold" style="color: ${textColor};">Your Match Score</h3>
+              <p class="text-sm" style="color: ${secondaryColor};">Based on: ${latestScan.job_title}</p>
+            </div>
+            <div class="text-5xl font-bold" style="color: ${scoreColor};">${latestScan.match_score}%</div>
+          </div>
+          <div class="h-4 bg-gray-200 rounded-full overflow-hidden">
+            <div class="progress-bar h-full rounded-full" style="width: ${latestScan.match_score}%; background: ${scoreColor};"></div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="suggestion-card p-6 rounded-xl shadow-lg" style="background: ${surfaceColor};">
+            <h4 class="text-xl font-bold mb-3" style="color: ${textColor};">✅ Skills You Have (${matchedSkills.length})</h4>
+            <div class="flex flex-wrap gap-2">
+              ${matchedSkills.map(skill => `
+                <span class="px-3 py-1 rounded-full text-sm font-medium" style="background: ${primaryColor}20; color: ${primaryColor};">
+                  ${skill}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+
+          ${missingSkills.length > 0 ? `
+            <div class="suggestion-card p-6 rounded-xl shadow-lg" style="background: ${surfaceColor}; border-left-color: ${scoreColor};">
+              <h4 class="text-xl font-bold mb-3" style="color: ${textColor};">🎯 Skills to Add (${missingSkills.length})</h4>
+              <div class="flex flex-wrap gap-2 mb-4">
+                ${missingSkills.map(skill => `
+                  <span class="px-3 py-1 rounded-full text-sm font-medium" style="background: ${scoreColor}20; color: ${scoreColor};">
+                    ${skill}
+                  </span>
+                `).join('')}
+              </div>
+              <div class="mt-4 p-4 rounded-lg" style="background: ${primaryColor}10;">
+                <p class="font-medium mb-2" style="color: ${textColor};">💡 Recommendations:</p>
+                <ul class="space-y-2 text-sm" style="color: ${secondaryColor};">
+                  <li>• Add these skills to your resume if you have experience with them</li>
+                  <li>• Consider taking online courses to learn these in-demand skills</li>
+                  <li>• Update your projects section to highlight relevant experience</li>
+                  <li>• Use exact keywords from the job description</li>
+                </ul>
+              </div>
+            </div>
+          ` : `
+            <div class="p-6 rounded-xl shadow-lg text-center" style="background: ${surfaceColor};">
+              <div class="text-5xl mb-3">🎉</div>
+              <h4 class="text-2xl font-bold mb-2" style="color: ${textColor};">Perfect Match!</h4>
+              <p style="color: ${secondaryColor};">Your resume contains all the required skills for this position.</p>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function renderAllResults(container) {
+      const sortedData = [...currentData].sort((a, b) => b.match_score - a.match_score);
+      const config = window.elementSdk ? window.elementSdk.config : currentThemeConfig;
+      const surfaceColor = config.surface_color || currentThemeConfig.surface_color;
+      const textColor = config.text_color || currentThemeConfig.text_color;
+      const secondaryColor = config.secondary_action_color || currentThemeConfig.secondary_action_color;
+
+      container.innerHTML = `
+        <div class="space-y-4 max-h-96 overflow-y-auto">
+          ${sortedData.map(result => {
+            const scoreColor = result.match_score >= 70 ? '#22c55e' : result.match_score >= 40 ? '#f59e0b' : '#ef4444';
+            
+            return `
+              <div class="p-6 rounded-xl shadow-lg" style="background: ${surfaceColor};">
+                <div class="flex justify-between items-start mb-4">
+                  <div class="flex-1">
+                    <h3 class="text-xl font-bold" style="color: ${textColor};">${result.candidate_name}</h3>
+                    <p class="text-sm" style="color: ${secondaryColor};">Job: ${result.job_title}</p>
+                    <p class="text-xs" style="color: ${secondaryColor};">${new Date(result.scan_date).toLocaleDateString()}</p>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-3xl font-bold" style="color: ${scoreColor};">${result.match_score}%</div>
+                    <div class="text-sm" style="color: ${secondaryColor};">Match Score</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
+                    <div class="progress-bar h-full rounded-full" style="width: ${result.match_score}%; background: ${scoreColor};"></div>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-sm font-medium mb-1" style="color: ${textColor};">Matched Skills:</p>
+                  <p class="text-sm" style="color: ${secondaryColor};">${result.matched_skills || 'None'}</p>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function exportToCSV() {
+      if (currentData.length === 0) {
+        showToast('No results to export', 'error');
+        return;
+      }
+
+      const headers = ['Candidate Name', 'Job Title', 'Match Score (%)', 'Matched Skills', 'Missing Skills', 'Total Skills', 'Scan Date'];
+      const rows = currentData.map(r => [
+        r.candidate_name,
+        r.job_title,
+        r.match_score,
+        r.matched_skills,
+        r.missing_skills,
+        r.total_skills,
+        new Date(r.scan_date).toLocaleDateString()
+      ]);
+
+      let csv = headers.join(',') + '\n';
+      rows.forEach(row => {
+        csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `resume_scan_results_${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      showToast('CSV downloaded successfully!', 'success');
+    }
+
+    function showErrorBanner() {
+      const banner = document.getElementById('errorBanner');
+      const content = document.getElementById('errorContent');
+      
+      content.innerHTML = `
+        <p class="mb-2">The following errors occurred during scanning:</p>
+        <ul class="list-disc list-inside space-y-1">
+          ${scanErrors.map(err => `
+            <li><strong>${err.file}:</strong> ${err.error}</li>
+          `).join('')}
+        </ul>
+        <p class="mt-3 text-sm">💡 Suggestions:</p>
+        <ul class="list-disc list-inside text-sm mt-1">
+          <li>Ensure files are not corrupted or password-protected</li>
+          <li>Try converting PDF files to a different format</li>
+          <li>For images, ensure text is clear and readable</li>
+          <li>Check that files are properly formatted documents</li>
+        </ul>
+      `;
+      
+      banner.classList.remove('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+      const existingToast = document.querySelector('.toast');
+      if (existingToast) existingToast.remove();
+
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div class="flex items-center gap-3">
+          <span class="text-lg">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+          <span class="font-medium">${message}</span>
+        </div>
+      `;
+      document.body.appendChild(toast);
+
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function showInlineWarning(message) {
+      const existingWarning = document.getElementById('inlineWarning');
+      if (existingWarning) existingWarning.remove();
+
+      const warning = document.createElement('div');
+      warning.id = 'inlineWarning';
+      warning.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 font-semibold';
+      warning.textContent = message;
+      document.body.appendChild(warning);
+    }
+
+    function hideInlineWarning() {
+      const warning = document.getElementById('inlineWarning');
+      if (warning) warning.remove();
+    }
+
+    function setupDragDrop(dropZoneId, inputId, isMultiple = false) {
+      const dropZone = document.getElementById(dropZoneId);
+      const input = document.getElementById(inputId);
+
+      dropZone.addEventListener('click', () => input.click());
+
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        
+        const files = Array.from(e.dataTransfer.files);
+        if (isMultiple) {
+          handleResumeUpload(files);
+        } else {
+          handleJDUpload(files[0]);
+        }
+      });
+
+      input.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        if (isMultiple) {
+          handleResumeUpload(files);
+        } else {
+          handleJDUpload(files[0]);
+        }
+      });
+    }
+
+    async function handleJDUpload(file) {
+      if (!file) return;
+      
+      const fileType = file.name.split('.').pop().toLowerCase();
+      const isImage = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileType);
+      
+      if (isImage) {
+        showToast('Extracting text from image... This may take a moment', 'info');
+      } else {
+        showToast('Processing job description...', 'info');
+      }
+      
+      jdFile = file;
+      
+      try {
+        jdText = await readFile(file);
+        
+        const config = window.elementSdk ? window.elementSdk.config : currentThemeConfig;
+        const primaryColor = config.primary_action_color || currentThemeConfig.primary_action_color;
+        
+        document.getElementById('jdFileName').innerHTML = `
+          <div class="file-info">
+            <span>📄 ${file.name}</span>
+            <button onclick="deleteJD()" class="ml-3 px-3 py-1 rounded-lg text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-colors delete-btn">Remove</button>
+          </div>
+        `;
+        checkScanReady();
+        showToast('Job description uploaded successfully', 'success');
+      } catch (error) {
+        showToast('Failed to read job description: ' + error.message, 'error');
+        jdFile = null;
+        jdText = '';
+        checkScanReady();
+      }
+    }
+
+    function deleteJD() {
+      jdFile = null;
+      jdText = '';
+      document.getElementById('jdFileName').innerHTML = '';
+      document.getElementById('jdInput').value = '';
+      // Also clear text input if it exists
+      document.getElementById('jdTextInput').value = '';
+      checkScanReady();
+      showToast('Job description removed', 'info');
+    }
+
+    window.deleteJD = deleteJD;
+
+    function handleResumeUpload(files) {
+      if (!files || files.length === 0) return;
+
+      // 🧑 Candidate Mode: allow only ONE resume, no overwrite
+      if (isCandidateMode) {
+        if (resumeFiles.length > 0) {
+          showToast(
+            'Only one resume is allowed in Candidate Mode. Please remove the existing resume and upload again.',
+            'error'
+          );
+          return;
+        }
+
+        // Allow first resume
+        resumeFiles = [files[0]];
+        renderResumeList();
+        checkScanReady();
+        showToast('Resume uploaded successfully', 'success');
+        return;
+      }
+
+      // 👔 Recruiter Mode: APPEND resumes (do NOT overwrite)
+      resumeFiles = resumeFiles.concat(files);
+
+      renderResumeList();
+      checkScanReady();
+      showToast(`${files.length} resume(s) added successfully`, 'success');
+    }
+
+
+    function renderResumeList() {
+      const config = window.elementSdk ? window.elementSdk.config : currentThemeConfig;
+      const textColor = config.text_color || currentThemeConfig.text_color;
+      const surfaceColor = config.surface_color || currentThemeConfig.surface_color;
+      
+      const container = document.getElementById('resumeFilesList');
+      container.innerHTML = resumeFiles.map((file, index) => `
+        <div class="flex justify-between items-center p-3 rounded-lg" style="background: ${surfaceColor};">
+          <span class="text-sm" style="color: ${textColor};">📄 ${file.name}</span>
+          <button onclick="deleteResume(${index})" class="delete-btn px-3 py-1 rounded text-sm" style="background: #ef4444; color: white;">Remove</button>
+        </div>
+      `).join('');
+
+      document.getElementById('resumeFileNames').textContent = `${resumeFiles.length} file(s) selected`;
+    }
+
+    function deleteResume(index) {
+      resumeFiles.splice(index, 1);
+      renderResumeList();
+      checkScanReady();
+      showToast('Resume removed', 'info');
+      
+      if (resumeFiles.length === 0) {
+        document.getElementById('resumeInput').value = '';
+        document.getElementById('resumeFileNames').textContent = '';
+      }
+    }
+
+    window.deleteResume = deleteResume;
+
+    function checkScanReady() {
+      const scanBtn = document.getElementById('scanBtn');
+      scanBtn.disabled = !(jdFile && jdText && resumeFiles.length > 0);
+    }
+
+    const tourSteps = [
+      {
+        element: 'modeToggle',
+        title: 'Dark/Light Mode',
+        description: 'Toggle between dark and light themes. Your preference will be saved for future visits!'
+      },
+      {
+        element: 'candidateMode',
+        title: 'Candidate Mode',
+        description: 'Switch to Candidate Mode to get personalized feedback and suggestions on your resume!'
+      },
+      {
+        element: 'jdDropZone',
+        title: 'Job Description',
+        description: 'Upload a job description file (.txt, .pdf, .docx, images) or switch to the "Enter Text" tab to paste the description directly!'
+      },
+      {
+        element: 'resumeDropZone',
+        title: 'Upload Resumes',
+        description: 'Upload one or multiple resumes to scan against the job description. Drag & drop supported!'
+      },
+      {
+        element: 'scanBtn',
+        title: 'Scan Resumes',
+        description: 'Click here to start the scanning process. Results are saved automatically!'
+      }
+    ];
+
+    let currentTourStep = 0;
+
+    function startTour() {
+      if (!localStorage.getItem('resume_scanner_tour_completed')) {
+        showTourStep(0);
+      }
+    }
+
+    function showTourStep(stepIndex) {
+      if (stepIndex >= tourSteps.length) {
+        endTour();
+        return;
+      }
+
+      currentTourStep = stepIndex;
+      const step = tourSteps[stepIndex];
+      const element = document.getElementById(step.element);
+      
+      if (!element) {
+        showTourStep(stepIndex + 1);
+        return;
+      }
+
+      const rect = element.getBoundingClientRect();
+      const config = window.elementSdk ? window.elementSdk.config : currentThemeConfig;
+      const surfaceColor = config.surface_color || currentThemeConfig.surface_color;
+      const textColor = config.text_color || currentThemeConfig.text_color;
+      const primaryColor = config.primary_action_color || currentThemeConfig.primary_action_color;
+      
+      document.getElementById('tourOverlay').classList.remove('hidden');
+      
+      const spotlight = document.getElementById('tourSpotlight');
+      spotlight.style.left = `${rect.left - 8}px`;
+      spotlight.style.top = `${rect.top - 8}px`;
+      spotlight.style.width = `${rect.width + 16}px`;
+      spotlight.style.height = `${rect.height + 16}px`;
+
+      const tooltip = document.getElementById('tourTooltip');
+      tooltip.style.background = surfaceColor;
+      tooltip.innerHTML = `
+        <div class="relative">
+          <button onclick="skipTour()" class="absolute top-2 right-2 p-2 rounded-lg hover:bg-white/20 transition-colors text-white" style="background: rgba(255,255,255,0.1);">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+          <h3 class="text-xl font-bold mb-2 pr-8" style="color: ${textColor};">${step.title}</h3>
+          <p class="mb-4 pr-8" style="color: ${textColor};">${step.description}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-sm" style="color: ${textColor};">Step ${stepIndex + 1} of ${tourSteps.length}</span>
+            <div class="flex gap-2">
+              <button onclick="skipTour()" class="px-4 py-2 rounded font-medium" style="background: #64748b; color: white;">Skip</button>
+              <button onclick="nextTourStep()" class="px-4 py-2 rounded font-medium" style="background: ${primaryColor}; color: white;">
+                ${stepIndex === tourSteps.length - 1 ? 'Finish' : 'Next'}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // position tooltip; prefer below, but if it overflows viewport place above
+      const tooltipTopDefault = rect.bottom + 20;
+      const tooltipLeftDefault = rect.left;
+      // measure tooltip (after content set)
+      const tooltipRect = tooltip.getBoundingClientRect();
+      let tooltipTop = tooltipTopDefault;
+      // if tooltip bottom would overflow viewport, place it above the element
+      if (tooltipTop + tooltipRect.height > window.innerHeight - 20) {
+        tooltipTop = rect.top - tooltipRect.height - 20;
+        if (tooltipTop < 20) tooltipTop = 20;
+      }
+      // keep tooltip within horizontal bounds with 20px padding
+      const tooltipLeft = Math.max(20, Math.min(window.innerWidth - tooltipRect.width - 20, tooltipLeftDefault));
+      tooltip.style.top = `${tooltipTop}px`;
+      tooltip.style.left = `${tooltipLeft}px`;
+    }
+
+    function nextTourStep() {
+      showTourStep(currentTourStep + 1);
+    }
+
+    function skipTour() {
+      endTour();
+    }
+
+    function endTour() {
+      document.getElementById('tourOverlay').classList.add('hidden');
+      localStorage.setItem('resume_scanner_tour_completed', 'true');
+      showToast('Tour completed! Enjoy using AI Resume Scanner!', 'success');
+    }
+
+    window.nextTourStep = nextTourStep;
+    window.skipTour = skipTour;
+
+    // Tab switching for job description
+    document.getElementById('uploadTab').addEventListener('click', () => switchTab('upload'));
+    document.getElementById('textTab').addEventListener('click', () => switchTab('text'));
+    
+    // Handle text input changes
+    document.getElementById('jdTextInput').addEventListener('input', handleJDTextInput);
+
+    function switchTab(tab) {
+      const uploadTab = document.getElementById('uploadTab');
+      const textTab = document.getElementById('textTab');
+      const uploadContent = document.getElementById('uploadTabContent');
+      const textContent = document.getElementById('textTabContent');
+      
+      if (tab === 'upload') {
+        uploadTab.classList.add('active');
+        textTab.classList.remove('active');
+        uploadContent.classList.remove('hidden');
+        textContent.classList.add('hidden');
+        // Clear text input when switching to upload
+        document.getElementById('jdTextInput').value = '';
+        jdText = '';
+        checkScanReady();
+      } else {
+        textTab.classList.add('active');
+        uploadTab.classList.remove('active');
+        textContent.classList.remove('hidden');
+        uploadContent.classList.add('hidden');
+        // Clear file when switching to text
+        jdFile = null;
+        document.getElementById('jdFileName').innerHTML = '';
+        document.getElementById('jdInput').value = '';
+        checkScanReady();
+      }
+    }
+
+    function handleJDTextInput() {
+      const text = document.getElementById('jdTextInput').value.trim();
+      jdText = text;
+      if (text) {
+        document.getElementById('jdFileName').innerHTML = `
+          <div class="file-info">
+            <span>📝 Text Input (${text.length} characters)</span>
+            <button onclick="clearJDText()" class="ml-3 px-3 py-1 rounded-lg text-sm font-medium bg-red-500 hover:bg-red-600 text-white transition-colors delete-btn">Clear</button>
+          </div>
+        `;
+      } else {
+        document.getElementById('jdFileName').innerHTML = '';
+      }
+      checkScanReady();
+    }
+
+    function clearJDText() {
+      document.getElementById('jdTextInput').value = '';
+      jdText = '';
+      document.getElementById('jdFileName').innerHTML = '';
+      checkScanReady();
+      showToast('Job description text cleared', 'info');
+    }
+
+    window.clearJDText = clearJDText;
+
+    setupDragDrop('jdDropZone', 'jdInput', false);
+    setupDragDrop('resumeDropZone', 'resumeInput', true);
+
+    document.getElementById('scanBtn').addEventListener('click', scanResumes);
+    document.getElementById('exportBtnModal').addEventListener('click', exportToCSV);
+    document.getElementById('modeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('tourBtn').addEventListener('click', () => showTourStep(0));
+    document.getElementById('closeResultsBtn').addEventListener('click', () => {
+      document.getElementById('resultsModal').classList.add('hidden');
+    });
+    document.getElementById('resultsBackdrop').addEventListener('click', () => {
+      document.getElementById('resultsModal').classList.add('hidden');
+    });
+    document.getElementById('closeErrorBtn').addEventListener('click', () => {
+      document.getElementById('errorBanner').classList.add('hidden');
+    });
+    
+    document.getElementById('candidateModeToggle').addEventListener('click', () => {
+      isCandidateMode = !isCandidateMode;
+      applyModeStyles();
+      updateToggleVisual();
+    });
+
+    detectTheme();
+    initApp();
+    applyModeStyles();
+    showPrivacyGateIfNeeded();
+    
+    setTimeout(() => {
+      if (!localStorage.getItem('resume_scanner_tour_completed')) {
+        startTour();
+      }
+    }, 1000);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b4fcd08305b84d1',t:'MTc2NjkxMTczMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ <script>
+  document.getElementById("currentYear").textContent = new Date().getFullYear();
+ </script>
+ </body>
+</html>
