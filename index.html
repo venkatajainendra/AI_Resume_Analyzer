@@ -4,66 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Primary SEO -->
-  <title>AI Resume Scanner | Free Resume Skill Matcher (Recruiter & Candidate Mode)</title>
+  <title>AI Resume Analyzer | Free Resume Skill Matcher (Recruiter & Candidate Mode)</title>
   <link rel="icon" type="image/png" href="./assets/images/logo.png">
   <meta name="description"
-        content="Free AI Resume Scanner to match resumes with job descriptions. Analyze skills, get match scores, and download results instantly. No signup. No data stored. 100% privacy." />
+        content="Free AI Resume Analyzer to match resumes with job descriptions. Analyze skills, get match scores, and download results instantly. No signup. No data stored. 100% privacy." />
 
   <meta name="keywords"
-        content="resume scanner, ai resume scanner, free resume scanner, resume skill matcher, resume vs job description, ats resume scanner, resume analyzer, recruiter resume scanner, candidate resume feedback" />
+        content="resume scanner, ai resume analyzer, free resume scanner, resume skill matcher, resume vs job description, ats resume scanner, resume analyzer, recruiter resume scanner, candidate resume feedback" />
 
-  <meta name="author" content="NG Technologies" />
+  <meta name="author" content="jainendra" />
   <meta name="robots" content="index, follow" />
-
-  <!-- Open Graph (LinkedIn / Facebook) -->
-  <meta property="og:title"
-        content="AI Resume Scanner – Free, Secure & Private Resume Matching Tool" />
-  <meta property="og:description"
-        content="Compare resumes with job descriptions using AI. Works fully in your browser. No data stored. Free alternative to paid resume scanners." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https:/airesumescanner.nagarjunareddy.in/" />
-  <meta property="og:image"
-        content="https:/airesumescanner.nagarjunareddy.in/seo-preview.png" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title"
-        content="AI Resume Scanner – Free Resume Skill Matcher" />
-  <meta name="twitter:description"
-        content="Free AI-powered resume scanner with recruiter & candidate modes. No signup. No data stored." />
-  <meta name="twitter:image"
-        content="https:/airesumescanner.nagarjunareddy.in/images/seo-preview.png" />
 
   <!-- Performance & UX -->
   <meta name="theme-color" content="#3b82f6" />
-  <meta name="application-name" content="AI Resume Scanner" />
+  <meta name="application-name" content="AI Resume Analyzer" />
 
   <!-- Security & Trust -->
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-
-    <!-- 🔷 Structured Data: SoftwareApplication (SEO Bonus) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "AI Resume Scanner",
-    "url": "https://airesumescanner.nagarjunareddy.in/",
-    "operatingSystem": "Web",
-    "applicationCategory": "BusinessApplication",
-    "description": "Free AI Resume Scanner to match resumes with job descriptions. Runs fully in the browser with no data stored and complete privacy.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "creator": {
-      "@type": "Organization",
-      "name": "NG Technologies"
-    }
-  }
-  </script>
-  <!-- 🔷 End Structured Data -->
 
 
   <!-- Existing scripts -->
@@ -577,7 +534,7 @@
       </svg></button>
     </div>
     <div class="max-w-4xl mx-auto">
-     <h1 id="appTitle" class="text-6xl font-bold mb-4 text-white drop-shadow-lg">AI Resume Scanner</h1>
+     <h1 id="appTitle" class="text-6xl font-bold mb-4 text-white drop-shadow-lg">AI Resume Analyzer</h1>
      <p id="subtitle" class="text-2xl mb-8 drop-shadow-md text-white">AI-Powered Resume Matching</p>
      <div class="flex justify-center items-center gap-4 mb-6">
       <span id="modeLabel" class="text-lg font-medium drop-shadow-md text-white">Mode:</span>
@@ -696,7 +653,7 @@
    </div>
    <!-- Embedded Footer -->
     <div id="footerText" class="text-center py-3 text-sm">
-      © <span id="currentYear"></span> NG Technologies| AI Resume Scanner. All rights reserved.
+      © <span id="currentYear"></span>| AI Resume Analyzer. All rights reserved.
     </div>
     <!-- Privacy & Trust Gate Modal -->
     <div id="privacyGate" class="fixed inset-0 z-[99999] flex items-center justify-center hidden">
@@ -710,7 +667,7 @@
             </svg>
           </div>
           <h2 class="text-4xl font-bold mb-2 text-white">
-            Welcome to AI Resume Scanner
+            Welcome to AI Resume Analyzer
           </h2>
           <p class="text-white text-lg drop-shadow-md">Your privacy-first resume matching tool</p>
         </div>
@@ -778,7 +735,7 @@
       secondary_action_color: "#64748b",
       font_family: "system-ui",
       font_size: 16,
-      app_title: "AI Resume Scanner",
+      app_title: "AI Resume Analyzer",
       subtitle: "AI-Powered Resume Matching",
       jd_upload_label: "Upload Job Description",
       resume_upload_label: "Upload Resumes",
@@ -786,7 +743,7 @@
       candidate_mode_label: "Candidate Mode",
       results_title: "Scan Results",
       export_button_text: "Download CSV",
-      tour_welcome_title: "Welcome to AI Resume Scanner!",
+      tour_welcome_title: "Welcome to AI Resume Analyzer!",
       tour_welcome_message: "Let's take a quick tour of the features"
     };
 
@@ -1839,7 +1796,7 @@
     function endTour() {
       document.getElementById('tourOverlay').classList.add('hidden');
       localStorage.setItem('resume_scanner_tour_completed', 'true');
-      showToast('Tour completed! Enjoy using AI Resume Scanner!', 'success');
+      showToast('Tour completed! Enjoy using AI Resume Analyzer!', 'success');
     }
 
     window.nextTourStep = nextTourStep;
